@@ -1,0 +1,18 @@
+{
+  "name": "Coliseu",
+  "short_name": "Coliseu",
+  "description": "Sistema de gestão de alunos da academia Coliseu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141416",
+  "theme_color": "#141416",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
