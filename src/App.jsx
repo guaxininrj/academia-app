@@ -36,14 +36,14 @@ function withTimeout(promise, ms = 10000) {
   });
 }
 
-async function storageGet(key, shared) {
-  return withTimeout(window.storage.get(key, shared));
+function storageGet(key) {
+  const val = localStorage.getItem(key); return val ? { value: val } : null;
 }
-async function storageSet(key, value, shared) {
-  return withTimeout(window.storage.set(key, value, shared));
+function storageSet(key, value) {
+  localStorage.setItem(key, value); return true;
 }
-async function storageDelete(key, shared) {
-  return withTimeout(window.storage.delete(key, shared));
+function storageDelete(key) {
+  localStorage.removeItem(key); return true;
 }
 
 function todayISO() {
@@ -2189,7 +2189,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await storageGet(INDEX_KEY, true);
+        const res = storageGet(INDEX_KEY);
         setIndex(res ? JSON.parse(res.value) : []);
       } catch (e) {
         setIndex([]);
@@ -2210,7 +2210,7 @@ export default function App() {
   async function persistIndex(novoIndex) {
     setIndex(novoIndex);
     try {
-      await storageSet(INDEX_KEY, JSON.stringify(novoIndex), true);
+      storageSet(INDEX_KEY, JSON.stringify(novoIndex));
       return { ok: true };
     } catch (e) {
       const msg = (e && e.message) ? e.message : "erro desconhecido";
@@ -2221,7 +2221,7 @@ export default function App() {
 
   async function getAluno(id) {
     try {
-      const res = await storageGet("aluno:" + id, true);
+      const res = storageGet("aluno:" + id);
       return res ? JSON.parse(res.value) : null;
     } catch (e) {
       return null;
@@ -2230,7 +2230,7 @@ export default function App() {
 
   async function salvarAluno(record) {
     try {
-      await storageSet("aluno:" + record.id, JSON.stringify(record), true);
+      storageSet("aluno:" + record.id, JSON.stringify(record));
     } catch (e) {
       const msg = (e && e.message) ? e.message : "erro desconhecido";
       return { ok: false, error: msg };
@@ -2249,7 +2249,7 @@ export default function App() {
 
   async function excluirAluno(id) {
     try {
-      await storageDelete("aluno:" + id, true);
+      storageDelete("aluno:" + id);
     } catch (e) {
       // segue mesmo se já não existir
     }
